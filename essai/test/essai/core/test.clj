@@ -18,36 +18,31 @@
     (is (= (word-sorting  "Have a nice day.")                   ["a" "day" "Have" "nice"]))
     (is (= (word-sorting  "Clojure is a fun language!")         ["a" "Clojure" "fun" "is" "language"]))
     (is (= (word-sorting  "Fools fall for foolish follies.")    ["fall" "follies" "foolish" "Fools" "for"])))
-    
-(deftest test-detect-x
-    (is (not (line-for-x?   [:e :e :e])))
-    (is (not (line-for-x?   [:x :x :e])))
-    (is (line-for-x?        [:x :x :x])))
-
-(deftest test-detect-o
-    (is (not (line-for-o?   [:e :e :e])))
-    (is (not (line-for-o?   [:o :o :e])))
-    (is (line-for-o?        [:o :o :o])))
+ ;   
+ ;(deftest test-detect-x
+ ;    (is (not (line-for?   [:e :e :e] :x)))
+ ;    (is (not (line-for?   [:x :x :e] :x)))
+ ;    (is (line-for?        [:x :x :x] :x)))
+ ; 
+ ;(deftest test-extract-cols
+ ;    (is (= [[:x :x :x] [:e :e :e] [:e :x :e]]
+ ;        (cols [ [:x :e :e]
+ ;                [:x :e :x]
+ ;                [:x :e :e]]))))
+ ;                
+ ; (deftest test-diag-up
+ ;     (is (= [:x :e :x]
+ ;         (diag-up [ [:o :e :x]
+ ;                    [:x :e :e]
+ ;                    [:x :e :o]]))))
+ ;                    
+ ;(deftest test-diag-down
+ ;    (is (= [:o :e :o]
+ ;        (diag-down [ [:o :e :x]
+ ;                     [:x :e :e]
+ ;                     [:x :e :o]]))))
+ ;
  
-(deftest test-extract-cols
-    (is (= [[:x :x :x] [:e :e :e] [:e :x :e]]
-        (cols [ [:x :e :e]
-                [:x :e :x]
-                [:x :e :e]]))))
-                
- (deftest test-diag-up
-     (is (= [:x :e :x]
-         (diag-up [ [:o :e :x]
-                    [:x :e :e]
-                    [:x :e :o]]))))
-                    
-(deftest test-diag-down
-    (is (= [:o :e :o]
-        (diag-down [ [:o :e :x]
-                     [:x :e :e]
-                     [:x :e :o]]))))
-
-
 (deftest test-find-winner
     (is (= nil (find-winner [[:e :e :e]
                             [:e :e :e]

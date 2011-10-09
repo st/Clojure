@@ -9,34 +9,41 @@
 (defn word-sorting [s]
     (sort-by #(.toLowerCase %) (.split (.replaceAll s "[^a-zA-Z ]""") " "))) 
     
-(defn- line-for? [l c]
-    (every? #(= c %) l))
-    
-(defn line-for-x? [l] 
-    (line-for? l :x))
-    
-(defn line-for-o? [l] 
-    (line-for? l :o))
-
-(defn at [v x y]
-    (-> v (nth y) (nth x)))
-
-(defn cols [v]
-    (for [x (range (count v))] (map #(nth % x) v)))
-
-(defn diag-up [v]
-    (let [len (count v)]
-        (for [x (range len)]
-            (at v x (- (dec len) x)))))
-            
-(defn diag-down [v]
-    (let [len (count v)]
-        (for [x (range len)]
-            (at v x x))))
+;(defn line-for? [l c]
+;    (every? #(= c %) l))
+;
+;(defn at [v x y]
+;    (-> v (nth y) (nth x)))
+;
+;(defn cols [v]
+;    (for [x (range (count v))] (map #(nth % x) v)))
+;
+;(defn diag-up [v]
+;    [(at v 0 2) (at v 1 1) (at v 2 0)])
+;            
+;(defn diag-down [v]
+;    [(at v 0 0) (at v 1 1) (at v 2 2)])
+;    
+;(defn wins? [v c]
+;    (or
+;        (some #(line-for? % c) v) 
+;        (some #(line-for? % c) (cols v))
+;        (line-for? (diag-up v) c)
+;        (line-for? (diag-down v) c)))
 
 (defn find-winner [v]
-    (let [all (conj (map conj v (cols v) (diag-down v) (diag-up v))]
-        (cond
-            (some line-for-x? all) :x
-            (some line-for-o? all) :o
-            :else nil)))
+    (let [  line-for? (fn [l c] (every? #(= c %) l))
+            at (fn [v x y] (-> v (nth y) (nth x)))
+            diag-up (fn [v] [(at v 0 2) (at v 1 1) (at v 2 0)])
+            diag-down (fn [v] [(at v 0 0) (at v 1 1) (at v 2 2)])            
+            cols (fn [v] (for [x (range (count v))] (map #(nth % x) v)))            
+            wins? (fn [v c]
+                    (or
+                        (some #(line-for? % c) v) 
+                        (some #(line-for? % c) (cols v))
+                        (line-for? (diag-up v) c)
+                        (line-for? (diag-down v) c)))]
+    (cond
+        (wins? v :x) :x
+        (wins? v :o) :o
+        :else nil)))
